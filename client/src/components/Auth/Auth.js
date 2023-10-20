@@ -6,7 +6,7 @@ import Input from './Input';
 import { GoogleLogin } from 'react-google-login'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {signin, signup} from '../../actions/auth';
+import { signin, signup } from '../../actions/auth';
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
 
@@ -22,22 +22,22 @@ const Auth = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(isSignup) {
-            dispatch(signup(formData, navigate))
+        if (isSignup) {
+            dispatch(signup(formData, navigate));
         } else {
-            dispatch(signin(formData, navigate))
+            dispatch(signin(formData, navigate));
         }
     };
 
-    const handleChange = (e) => { 
-        setFormData({...formData, [e.target.name]: e.target.value})
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
     };
 
     const hanldeShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
 
     const switchMode = () => {
         setIsSignUp((prevSignup) => !prevSignup);
-        hanldeShowPassword(false);
+        setShowPassword(false);
     };
 
     const googleSuccess = async (res) => {
