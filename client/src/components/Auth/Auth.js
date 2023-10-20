@@ -5,20 +5,33 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Input from './Input';
 import { GoogleLogin } from 'react-google-login'
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import {signin, signup} from '../../actions/auth';
+
+const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
 
 const Auth = () => {
     const classes = useStyles();
     const state = null;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignUp] = useState(false);
+    const [formData, setFormData] = useState(initialState);
 
-    const handleSubmit = () => {
-
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if(isSignup) {
+            dispatch(signup(formData, navigate))
+        } else {
+            dispatch(signin(formData, navigate))
+        }
     };
 
-    const handleChange = () => { };
+    const handleChange = (e) => { 
+        setFormData({...formData, [e.target.name]: e.target.value})
+    };
 
     const hanldeShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
 
@@ -36,17 +49,14 @@ const Auth = () => {
                 type: 'AUTH',
                 data: { result, token }
             })
+            navigate('/');
         } catch (error) {
             console.log('error', error);
         }
     };
 
     const googleFailure = (error) => {
-        console.log('error', error);
-        console.log('google failure ! Try again later');
-
         if (error.error === 'popup_closed_by_user') {
-            console.log('Google Sign-In popup was closed by the user.');
             // Handle this situation accordingly, e.g., show a message to the user.
         } else {
             console.log('Login error:', error);
@@ -69,7 +79,7 @@ const Auth = () => {
 
                                     <Input name="firstName" label="First Name" handleChange={handleChange} autoFocus half />
 
-                                    <Input name="firstName" label="First Name" handleChange={handleChange} half />
+                                    <Input name="lastName" label="Last Name" handleChange={handleChange} half />
                                 </>
                             )}
                             <Input name="email" label="email address" handleChange={handleChange} type="email" />
