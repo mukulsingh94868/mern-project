@@ -1,6 +1,8 @@
 import { AppBar, Avatar, Button, Toolbar, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Memories from '../../assets/memories.png';
+import MemoriesCamera from '../../assets/memoriesCamera.png';
+import MemoriesText from '../../assets/memoriesText.png';
 import useStyles from './styles';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -18,7 +20,7 @@ const Navbar = () => {
         dispatch({
             type: 'LOGOUT',
         });
-        navigate('/');
+        navigate('/posts');
         setUser(null);
         window.location.reload();
     };
@@ -36,10 +38,11 @@ const Navbar = () => {
     return (
         <>
             <AppBar className={classes.appBar} position="static" color="inherit">
-                <div className={classes.brandContainer}>
-                    <Typography component={Link} to="/" className={classes.heading} variant="h2" align="center">Memories</Typography>
-                    <img className={classes.image} src={Memories} alt="icon" height="60" />
-                </div>
+                <Link to="/posts" className={classes.brandContainer}>
+                    {/* <Typography component={Link} to="/posts" className={classes.heading} variant="h2" align="center">Memories</Typography> */}
+                    <img className={classes.image} src={MemoriesText} alt="icon" height="45" />
+                    <img className={classes.image} src={MemoriesCamera} alt="icon" height="40" />
+                </Link>
 
                 <Toolbar className={classes.toolbar}>
                     {

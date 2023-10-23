@@ -1,7 +1,6 @@
 import React from 'react';
 import useStyles from './styles';
 import { Button, Card, CardContent, CardMedia, Typography, CardActions } from '@mui/material';
-import styles from './styles';
 import moment from 'moment/moment';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
@@ -39,7 +38,7 @@ const Post = ({ post, setCurrentId }) => {
 
   return (
     <>
-      <Card className={classes.card}>
+      <Card className={classes.card} raised elevation={6}>
         <CardMedia className={classes.media} image={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
         <div className={classes.overlay}>
           <Typography variant="h6">{post.name}</Typography>

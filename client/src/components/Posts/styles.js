@@ -12,8 +12,8 @@ export default makeStyles((theme) => ({
     textAlign: 'center',
   },
   post: {
-    maxHeight: '750px',
-    overflowY: 'auto',
+    // maxHeight: '750px',
+    // overflowY: 'auto',
 
     '&::-webkit-scrollbar': {
       width: '8px',

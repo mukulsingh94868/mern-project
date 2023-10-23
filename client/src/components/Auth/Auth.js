@@ -49,7 +49,7 @@ const Auth = () => {
                 type: 'AUTH',
                 data: { result, token }
             })
-            navigate('/');
+            navigate('/posts');
         } catch (error) {
             console.log('error', error);
         }

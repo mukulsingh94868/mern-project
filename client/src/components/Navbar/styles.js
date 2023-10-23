@@ -6,7 +6,7 @@ export default makeStyles(() => ({
         margin: '30px 0',
         display: 'flex !important',
         flexDirection: 'row !important',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
     },
     heading: {
@@ -23,7 +23,7 @@ export default makeStyles(() => ({
     profile: {
         display: 'flex !important',
         justifyContent: 'space-between !important',
-        width: 400
+        width: 300
     },
     userName: {
         display: 'flex !important',
