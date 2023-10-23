@@ -8,14 +8,13 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch } from 'react-redux';
 import { deletePost, likePost } from '../../../actions/posts';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+
 
 const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem('profile'));
-
-  console.log('post', post);  
-  console.log('user', user);
 
   const handleDelete = (id) => {
     dispatch(deletePost(id));
@@ -24,30 +23,18 @@ const Post = ({ post, setCurrentId }) => {
 
   const handleLikePost = (id) => {
     dispatch(likePost(id))
-    window.location.reload();
   };
 
   const Likes = () => {
-    //     if (post?.likes?.length > 0) {
-    //       return post?.likes?.find((like) => like === (user?.result?.googleId || user?.result?._id))
-    //         ?
-    //         (
-    //           <>
-    //             <ThumbUpAltIcon fontSize='small' />
-    //             <Typography>&nbsp;{post?.likes?.length > 2 ? `You and ${post?.likes?.length - 1} others` : `${post?.like?.length} like ${post?.like?.length > 1 ? 's' : ''}}</Typography>
-
-    //           </>
-    //         )
-    //         :
-    //         (
-    //           <ThumbUpAltIcon fontSize='small' /> & nbsp; { post?.likes?.length } { post?.likes?.length === 1 ? 'Like' : 'Likes' }
-    //         )
-    //     }
-    // return <>
-    //   <ThumbUpAltIcon fontSize='small' />
-    //   &nbsp;
-    //   Like
-    // </>
+    if (post?.likes?.length > 0) {
+      return post?.likes?.find((like) => like === user?.result?._id) ?
+        (
+          <><ThumbUpAltIcon fontSize='small' />&nbsp; {post?.likes?.length > 2 ? `You and ${post?.likes?.length - 1} others ` : `${post?.likes?.length} like ${post?.likes?.length > 1 ? 's' : ''}`} </>
+        ) : (
+          <><ThumbUpOffAltIcon fontSize='small' />&nbsp; {post?.likes?.length} {post?.likes?.length === 1 ? 'Like' : 'likes'} </>
+        )
+    }
+    return <><ThumbUpOffAltIcon fontSize='small' />&nbsp; Like</>
   };
 
   return (
@@ -59,13 +46,11 @@ const Post = ({ post, setCurrentId }) => {
           <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
         </div>
 
-        {
-          (user?.result?._id === post?.creator) && (
-            <div className={classes.overlay2}>
-              <Button style={{ color: 'white' }} size="small" onClick={() => setCurrentId(post._id)}><MoreHorizIcon fontSize="default" /></Button>
-            </div>
-          )
-        }
+        {user?.result?._id === post?.creator && (
+          <div className={classes.overlay2}>
+            <Button style={{ color: 'white' }} size="small" onClick={() => setCurrentId(post._id)}><MoreHorizIcon fontSize="default" /></Button>
+          </div>
+        )}
 
         <div className={classes.details}>
           <Typography variant="body2" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
@@ -80,15 +65,12 @@ const Post = ({ post, setCurrentId }) => {
             <Likes />
           </Button>
 
-
-          {
-            (user?.result?._id === post?.creator) && (
-              <Button size="small" color="primary" onClick={() => handleDelete(post?._id)}>
-                <DeleteIcon fontSize="small" />
-                Delete
-              </Button>
-            )
-          }
+          {user?.result?._id === post?.creator && (
+            <Button size="small" color="primary" onClick={() => handleDelete(post?._id)}>
+              <DeleteIcon fontSize="small" />
+              Delete
+            </Button>
+          )}
         </CardActions>
       </Card>
     </>
