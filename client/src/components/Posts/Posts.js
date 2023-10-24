@@ -6,36 +6,33 @@ import { useSelector } from 'react-redux';
 
 const Posts = ({ setCurrentId }) => {
   const classes = useStyles();
-  const [posts, setPosts] = useState(null);
+  // const [posts, setPosts] = useState(null);
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const getData = async () => {
-      const response = await fetch('http://localhost:5000/posts');
-      const result = await response.json();
-      setPosts(result?.data);
-    };
+  //   const getData = async () => {
+  //     const response = await fetch('http://localhost:5000/posts');
+  //     const result = await response.json();
+  //     setPosts(result?.data);
+  //   };
 
-    getData();
-  }, [])
+  //   getData();
+  // }, [])
 
-  // const posts = useSelector((state) => state.posts);
-  const { isLoading } = useSelector((state) => state.posts);
+  const { posts, isLoading } = useSelector((state) => state.posts);
 
-  if (!posts?.length && !isLoading) return 'No posts found'
+  if (!posts.length && !isLoading) return 'No posts';
 
   return (
-    <>
-      {!posts?.length ? <CircularProgress /> : (
-        <Grid className={classes.container} container alignItems="stretch" spacing={3}>
-          {posts.map((post) => (
-            <Grid key={post._id} item xs={12} sm={12} md={6} lg={3}>
-              <Post post={post} setCurrentId={setCurrentId} />
-            </Grid>
-          ))}
-        </Grid>
-      )}
-    </>
+    isLoading ? <CircularProgress /> : (
+      <Grid className={classes.container} container alignItems="stretch" spacing={3}>
+        {posts?.map((post) => (
+          <Grid key={post._id} item xs={12} sm={12} md={6} lg={3}>
+            <Post post={post} setCurrentId={setCurrentId} />
+          </Grid>
+        ))}
+      </Grid>
+    )
   );
 }
 

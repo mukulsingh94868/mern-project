@@ -23,6 +23,7 @@ function App() {
             <Route path='/posts/:id' exact element={<PostDetails />} />
             {/* <Route path='/auth' exact element={() => (!user ? <Auth /> : <Navigate to="/posts" />)} /> */}
             <Route path='/auth' exact element={<Auth />} />
+
           </Routes>
         </Container>
       </BrowserRouter>

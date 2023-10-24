@@ -20,6 +20,8 @@ const Auth = () => {
     const [isSignup, setIsSignUp] = useState(false);
     const [formData, setFormData] = useState(initialState);
 
+    console.log('isSignUp', isSignup);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isSignup) {
@@ -35,8 +37,14 @@ const Auth = () => {
 
     const hanldeShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
 
+    // const switchMode = () => {
+    //     setIsSignUp((prevSignup) => !prevSignup);
+    //     setShowPassword(false);
+    // };
+
     const switchMode = () => {
-        setIsSignUp((prevSignup) => !prevSignup);
+        setFormData(initialState);
+        setIsSignUp((prevIsSignup) => !prevIsSignup);
         setShowPassword(false);
     };
 
