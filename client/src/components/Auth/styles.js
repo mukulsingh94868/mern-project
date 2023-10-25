@@ -26,5 +26,15 @@ export default makeStyles(() => ({
     },
     googleButton: {
         marginTop: '16px !important'
+    },
+
+    buttonAccount: {
+        textTransform: 'none !important',
+        fontSize: '15px !important'
+    },
+    spanTag: {
+        fontSize: '16px !important',
+        fontWeight: '700 !important',
+        color: 'black !important'
     }
 }));

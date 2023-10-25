@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useStyles from './styles';
-import { Button, Card, CardContent, CardMedia, Typography, CardActions, ButtonBase } from '@mui/material';
+import { Button, Card, CardContent, CardMedia, Typography, CardActions } from '@mui/material';
 import moment from 'moment/moment';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
@@ -8,38 +8,43 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch } from 'react-redux';
 import { deletePost, likePost } from '../../../actions/posts';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 
 const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [likes, setLikes] = useState(post?.likes);
   const user = JSON.parse(localStorage.getItem('profile'));
 
-  const handleDelete = (id) => {
-    dispatch(deletePost(id));
-    window.location.reload();
-  };
+  const userId = user?.result?.googleId || user?.result?.id;
+  const hasLikedPost = post?.likes?.find((like) => like === userId);
 
-  const handleLikePost = (id) => {
-    dispatch(likePost(id))
-  };
+  const handleLike = async () => {
+    dispatch(likePost(post._id))
 
+    if (hasLikedPost) {
+      setLikes(post?.likes?.filter((id) => id !== userId));
+    } else {
+      setLikes([...post?.likes, userId]);
+    }
+  };
   const Likes = () => {
-    if (post?.likes?.length > 0) {
-      return post?.likes?.find((like) => like === user?.result?._id) ?
+    if (likes?.length > 0) {
+      return likes?.find((like) => like === userId) ?
         (
-          <><ThumbUpAltIcon fontSize='small' />&nbsp; {post?.likes?.length > 2 ? `You and ${post?.likes?.length - 1} others ` : `${post?.likes?.length} like ${post?.likes?.length > 1 ? 's' : ''}`} </>
+          <><ThumbUpAltIcon fontSize='small' />&nbsp; {likes?.length > 2 ? `You and ${likes?.length - 1} others ` : `${likes?.length} like ${likes?.length > 1 ? 's' : ''}`} </>
         ) : (
-          <><ThumbUpOffAltIcon fontSize='small' />&nbsp; {post?.likes?.length} {post?.likes?.length === 1 ? 'Like' : 'likes'} </>
+          <><ThumbUpOffAltIcon fontSize='small' />&nbsp; {likes?.length} {likes?.length === 1 ? 'Like' : 'likes'} </>
         )
     }
     return <><ThumbUpOffAltIcon fontSize='small' />&nbsp; Like</>
   };
 
-  const openPost = () => {
-    navigate(`/posts/${post?._id}`);
+  const handleDelete = (id) => {
+    dispatch(deletePost(id));
+    toast.success('Deleted Successfully !', { duration: 3000 });
   };
 
   return (
@@ -83,11 +88,11 @@ const Post = ({ post, setCurrentId }) => {
 
 
         <CardActions className={classes.cardActions}>
-          <Button size="small" color="primary" disabled={!user?.result} onClick={() => dispatch(likePost(post._id))}>
+          <Button size="small" color="primary" disabled={!user?.result} onClick={() => handleLike(post?._id)}>
             <Likes />
           </Button>
           {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
-            <Button size="small" color="secondary" onClick={() => dispatch(deletePost(post._id))}>
+            <Button size="small" color="secondary" onClick={() => handleDelete(post?._id)}>
               <DeleteIcon fontSize="small" /> &nbsp; Delete
             </Button>
           )}

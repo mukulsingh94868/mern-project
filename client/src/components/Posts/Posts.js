@@ -1,23 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { CircularProgress, Grid } from '@mui/material';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import Post from './Post/Post';
 import useStyles from './styles';
-import { CircularProgress, Grid } from '@mui/material';
-import { useSelector } from 'react-redux';
 
 const Posts = ({ setCurrentId }) => {
   const classes = useStyles();
-  // const [posts, setPosts] = useState(null);
-
-  // useEffect(() => {
-
-  //   const getData = async () => {
-  //     const response = await fetch('http://localhost:5000/posts');
-  //     const result = await response.json();
-  //     setPosts(result?.data);
-  //   };
-
-  //   getData();
-  // }, [])
 
   const { posts, isLoading } = useSelector((state) => state.posts);
 

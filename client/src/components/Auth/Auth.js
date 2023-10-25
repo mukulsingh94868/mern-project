@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import useStyles from './styles';
-import { Avatar, Button, Container, Grid, Paper, TextField, Typography } from '@mui/material';
+import { Avatar, Button, Container, Grid, Paper, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Input from './Input';
-import { GoogleLogin } from 'react-google-login'
+// import { GoogleLogin } from 'react-google-login';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signin, signup } from '../../actions/auth';
@@ -12,15 +12,12 @@ const initialState = { firstName: '', lastName: '', email: '', password: '', con
 
 const Auth = () => {
     const classes = useStyles();
-    const state = null;
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignUp] = useState(false);
     const [formData, setFormData] = useState(initialState);
-
-    console.log('isSignUp', isSignup);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -37,40 +34,35 @@ const Auth = () => {
 
     const hanldeShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
 
-    // const switchMode = () => {
-    //     setIsSignUp((prevSignup) => !prevSignup);
-    //     setShowPassword(false);
-    // };
-
     const switchMode = () => {
         setFormData(initialState);
         setIsSignUp((prevIsSignup) => !prevIsSignup);
         setShowPassword(false);
     };
 
-    const googleSuccess = async (res) => {
-        const result = res?.profileObj;
-        const token = res?.tokenId;
+    // const googleSuccess = async (res) => {
+    //     const result = res?.profileObj;
+    //     const token = res?.tokenId;
 
-        try {
-            dispatch({
-                type: 'AUTH',
-                data: { result, token }
-            })
-            navigate('/posts');
-        } catch (error) {
-            console.log('error', error);
-        }
-    };
+    //     try {
+    //         dispatch({
+    //             type: 'AUTH',
+    //             data: { result, token }
+    //         })
+    //         navigate('/posts');
+    //     } catch (error) {
+    //         console.log('error', error);
+    //     }
+    // };
 
-    const googleFailure = (error) => {
-        if (error.error === 'popup_closed_by_user') {
-            // Handle this situation accordingly, e.g., show a message to the user.
-        } else {
-            console.log('Login error:', error);
-            // Handle other login errors.
-        }
-    };
+    // const googleFailure = (error) => {
+    //     if (error.error === 'popup_closed_by_user') {
+    //         // Handle this situation accordingly, e.g., show a message to the user.
+    //     } else {
+    //         console.log('Login error:', error);
+    //         // Handle other login errors.
+    //     }
+    // };
     return (
         <>
             <Container component="main" maxWidth="xs">
@@ -103,7 +95,7 @@ const Auth = () => {
                             {isSignup ? "Sign Up" : "Sign In"}
                         </Button>
 
-                        <GoogleLogin
+                        {/* <GoogleLogin
                             style={{ marginTop: '10px' }}
                             clientId='781543854789-2v6fcg5lcjdsj5ac8qrpo1kgi6mn1sfa.apps.googleusercontent.com'
                             render={(renderProps) => (
@@ -123,12 +115,24 @@ const Auth = () => {
                             onFailure={googleFailure}
                             // cookiePolicy='single_host_origin'
                             cookiePolicy={'single_host_origin'}
-                        />
+                        /> */}
 
                         <Grid container justify="flex-end">
                             <Grid item>
-                                <Button onClick={switchMode}>
-                                    {isSignup ? "Already have an account ? Sign In" : "Don't have an account ? Sign Up"}
+                                <Button onClick={switchMode} className={classes.buttonAccount}>
+                                    {
+                                        isSignup
+                                            ?
+                                            <Typography>
+                                                Already have an account?
+                                                <span className={classes.spanTag}> Sign In</span>
+                                            </Typography>
+                                            :
+                                            <Typography>
+                                                Don't have an account?
+                                                <span className={classes.spanTag}> Sign Up</span>
+                                            </Typography>
+                                    }
                                 </Button>
                             </Grid>
                         </Grid>

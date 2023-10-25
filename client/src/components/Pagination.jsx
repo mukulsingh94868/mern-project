@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import useStyles from './styles';
 import { Pagination, PaginationItem } from '@mui/material';
 import { Link } from 'react-router-dom';

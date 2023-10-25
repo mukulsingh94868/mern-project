@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import useStyles from './styles';
 import { Button, Paper, TextField, Typography } from '@mui/material';
 import FileBase from 'react-file-base64';
@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createPost, updatePost } from '../../actions/posts';
 import { useNavigate } from 'react-router-dom';
 import ChipInput from 'material-ui-chip-input';
+import toast from 'react-hot-toast';
 
 const Form = ({ currentId, setCurrentId }) => {
-    const [selectedData, setSelectedData] = useState(null);
     const [postData, setPostData] = useState({ title: '', message: '', tags: [], selectedFile: '' });
     const post = useSelector((state) => (currentId ? state.posts.posts.find((message) => message._id === currentId) : null));
     const dispatch = useDispatch();
@@ -16,32 +16,26 @@ const Form = ({ currentId, setCurrentId }) => {
     const user = JSON.parse(localStorage.getItem('profile'));
     const navigate = useNavigate();
 
-
-
-    // useEffect(() => {
-    //     if (selectedData) {
-    //         setPostData(selectedData);
-    //     }
-    // }, [selectedData])
+    const clear = useCallback(() => {
+        setCurrentId(0);
+        setPostData({ title: '', message: '', tags: [], selectedFile: '' });
+    }, [setCurrentId]);
 
     useEffect(() => {
         if (!post?.title) clear();
         if (post) setPostData(post);
-    }, [post]);
-
-    const clear = () => {
-        setCurrentId(0);
-        setPostData({ title: '', message: '', tags: [], selectedFile: '' });
-    };
+    }, [clear, post]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (currentId === 0) {
             dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
+            toast.success('Successfully Post Created', { duration: 3000 });
             clear();
         } else {
             dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
+            toast.success('Successfully Post Updated', { duration: 3000 });
             clear();
         }
     };
@@ -83,7 +77,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     </div>
                     <div className={classes.fileInput}><FileBase type="file" multiple={false} onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })} /></div>
                     <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
-                    <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
+                    <Button style={{ marginTop: '10px' }} variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
                 </form>
             </Paper>
         </>

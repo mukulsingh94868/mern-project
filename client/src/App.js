@@ -9,7 +9,7 @@ import { Toaster } from 'react-hot-toast';
 
 
 function App() {
-  const user = JSON.parse(localStorage.getItem('profile'));
+  // const user = JSON.parse(localStorage.getItem('profile'));
   return (
     <>
       <BrowserRouter>
