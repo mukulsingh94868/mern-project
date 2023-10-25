@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "name": "mern_stack",
+    "builds": [
+      { "src": "package.json", "use": "@vercel/node" }
+    ],
+    "routes": [
+      {
+        "src": "/(/.*)?", 
+        "dest": "/index.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "index.html"
+      }
+    ]
+  }
+  
